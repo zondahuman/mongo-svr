@@ -51,6 +51,12 @@ public class ContractTest extends AbstractJunitTemplate {
     }
 
 
+    @Test
+    public void testUpdateContractStatusFail() {
+//        Query query = new Query(Criteria.where("syncStatus").is("QUERY_FAILED"));
+        this.updateContractStatusFail();
+    }
+
 
 
     @Test
@@ -89,6 +95,23 @@ public class ContractTest extends AbstractJunitTemplate {
             for(Iterator<LoanAgreementInfo> iterator=loanAgreementInfoList.iterator();iterator.hasNext();){
                 LoanAgreementInfo loanAgreementInfo = iterator.next();
                 this.loanAgreementInfoMongoDao.updateById(LoanAgreementInfo.class, loanAgreementInfo.get_id().toString(), "loanAgreementSyncStatus", "INIT");
+            }
+        }
+
+    }
+
+    public void updateContractStatusFail(){
+        BasicQuery query = new BasicQuery("{ loanAgreementSyncStatus : 'FAILED' }");
+        List<LoanAgreementInfo> loanAgreementInfoList = this.loanAgreementInfoMongoDao.findList(query, LoanAgreementInfo.class);
+        if(CollectionUtils.isNotEmpty(loanAgreementInfoList)){
+            System.out.println("loanAgreementInfoList : " + loanAgreementInfoList);
+            System.out.println("loanAgreementInfoList_id : " + loanAgreementInfoList.get(0).get_id().toString());
+            for(Iterator<LoanAgreementInfo> iterator=loanAgreementInfoList.iterator();iterator.hasNext();){
+                LoanAgreementInfo loanAgreementInfo = iterator.next();
+                Map<String, Object> request = Maps.newHashMap();
+                request.put("loanAgreementSyncStatus", "INIT");
+                request.put("syncStatus", "INIT");
+                this.loanAgreementInfoMongoDao.updateById(LoanAgreementInfo.class, loanAgreementInfo.get_id().toString(), request);
             }
         }
 
