@@ -48,6 +48,7 @@ public class ContractTest extends AbstractJunitTemplate {
     public void testContractRepeat() {
 //        Query query = new Query(Criteria.where("syncStatus").is("QUERY_FAILED"));
         this.updateContractRepeat();
+        this.updateLoanGrantRepeat();
     }
 
 
@@ -55,6 +56,32 @@ public class ContractTest extends AbstractJunitTemplate {
     public void testUpdateContractStatusFail() {
 //        Query query = new Query(Criteria.where("syncStatus").is("QUERY_FAILED"));
         this.updateContractStatusFail();
+    }
+
+
+    @Test
+    public void testRealTimeSyncStatus() {
+//        Query query = new Query(Criteria.where("syncStatus").is("QUERY_FAILED"));
+        this.realTimeSyncStatus();
+    }
+
+
+    @Test
+    public void testUpdateContractStatus() {
+//        Query query = new Query(Criteria.where("syncStatus").is("QUERY_FAILED"));
+        this.updateContractStatus();
+    }
+
+    @Test
+    public void testLoan() {
+//        Query query = new Query(Criteria.where("syncStatus").is("QUERY_FAILED"));
+        this.updateLoanGrant();
+    }
+
+    @Test
+    public void testRepayPlan() {
+//        Query query = new Query(Criteria.where("syncStatus").is("QUERY_FAILED"));
+        this.updateLoanGrant();
     }
 
 
@@ -97,6 +124,36 @@ public class ContractTest extends AbstractJunitTemplate {
                 this.loanAgreementInfoMongoDao.updateById(LoanAgreementInfo.class, loanAgreementInfo.get_id().toString(), "loanAgreementSyncStatus", "INIT");
             }
         }
+        BasicQuery query1= new BasicQuery("{ loanOfferSyncStatus : 'QUERY_FAILED' }");
+        List<LoanAgreementInfo> loanAgreementInfoList1 = this.loanAgreementInfoMongoDao.findList(query1, LoanAgreementInfo.class);
+        if(CollectionUtils.isNotEmpty(loanAgreementInfoList1)){
+            System.out.println("loanAgreementInfoList1 : " + loanAgreementInfoList1);
+            System.out.println("loanAgreementInfoList1-id : " + loanAgreementInfoList1.get(0).get_id().toString());
+            for(Iterator<LoanAgreementInfo> iterator=loanAgreementInfoList1.iterator();iterator.hasNext();){
+                LoanAgreementInfo loanAgreementInfo = iterator.next();
+                this.loanAgreementInfoMongoDao.updateById(LoanAgreementInfo.class, loanAgreementInfo.get_id().toString(), "loanOfferSyncStatus", "INIT");
+            }
+        }
+        BasicQuery query2= new BasicQuery("{ repaymentPlanSyncStatus : 'QUERY_FAILED' }");
+        List<LoanAgreementInfo> loanAgreementInfoList2 = this.loanAgreementInfoMongoDao.findList(query2, LoanAgreementInfo.class);
+        if(CollectionUtils.isNotEmpty(loanAgreementInfoList2)){
+            System.out.println("loanAgreementInfoList2 : " + loanAgreementInfoList2);
+            System.out.println("loanAgreementInfoList2-id : " + loanAgreementInfoList2.get(0).get_id().toString());
+            for(Iterator<LoanAgreementInfo> iterator=loanAgreementInfoList2.iterator();iterator.hasNext();){
+                LoanAgreementInfo loanAgreementInfo = iterator.next();
+                this.loanAgreementInfoMongoDao.updateById(LoanAgreementInfo.class, loanAgreementInfo.get_id().toString(), "repaymentPlanSyncStatus", "INIT");
+            }
+        }
+        BasicQuery query3= new BasicQuery("{ loanRecoverySyncStatus : 'QUERY_FAILED' }");
+        List<LoanAgreementInfo> loanAgreementInfoList3 = this.loanAgreementInfoMongoDao.findList(query3, LoanAgreementInfo.class);
+        if(CollectionUtils.isNotEmpty(loanAgreementInfoList3)){
+            System.out.println("loanAgreementInfoList3 : " + loanAgreementInfoList3);
+            System.out.println("loanAgreementInfoList3-id : " + loanAgreementInfoList3.get(0).get_id().toString());
+            for(Iterator<LoanAgreementInfo> iterator=loanAgreementInfoList3.iterator();iterator.hasNext();){
+                LoanAgreementInfo loanAgreementInfo = iterator.next();
+                this.loanAgreementInfoMongoDao.updateById(LoanAgreementInfo.class, loanAgreementInfo.get_id().toString(), "loanRecoverySyncStatus", "INIT");
+            }
+        }
 
     }
 
@@ -134,6 +191,22 @@ public class ContractTest extends AbstractJunitTemplate {
 
     }
 
+    public void updateLoanGrantRepeat(){
+        BasicQuery query = new BasicQuery("{ loanOfferSyncStatus : 'REPEAT_REPORT_FAILED' }");
+        List<LoanAgreementInfo> loanAgreementInfoList = this.loanAgreementInfoMongoDao.findList(query, LoanAgreementInfo.class);
+        if(CollectionUtils.isNotEmpty(loanAgreementInfoList)){
+            System.out.println("loanAgreementInfoList : " + loanAgreementInfoList);
+            System.out.println("loanAgreementInfoList_id : " + loanAgreementInfoList.get(0).get_id().toString());
+            for(Iterator<LoanAgreementInfo> iterator=loanAgreementInfoList.iterator();iterator.hasNext();){
+                LoanAgreementInfo loanAgreementInfo = iterator.next();
+                Map<String, Object> request = Maps.newHashMap();
+                request.put("loanOfferSyncStatus", "SUCCESS");
+                request.put("syncStatus", "SUCCESS");
+                this.loanAgreementInfoMongoDao.updateById(LoanAgreementInfo.class, loanAgreementInfo.get_id().toString(), request);
+            }
+        }
+    }
+
 
 
     public void updateLoanGrant(){
@@ -145,6 +218,27 @@ public class ContractTest extends AbstractJunitTemplate {
             for (Iterator<LoanInfo> iterator = loanInfoList.iterator(); iterator.hasNext(); ) {
                 LoanInfo loanInfo = iterator.next();
                 this.loanInfoMongoDao.updateById(LoanInfo.class, loanInfo.get_id().toString(), "syncStatus", "INIT");
+            }
+        }
+        BasicQuery query1 = new BasicQuery("{ syncStatus : 'QUERY_FAILED' }");
+        List<LoanInfo> loanInfoList1 = this.loanInfoMongoDao.findList(query1, LoanInfo.class);
+        if(CollectionUtils.isNotEmpty(loanInfoList1)) {
+            System.out.println("loanInfoList1 : " + loanInfoList1);
+            System.out.println("loanInfoList1-id : " + loanInfoList1.get(0).get_id().toString());
+            for (Iterator<LoanInfo> iterator = loanInfoList1.iterator(); iterator.hasNext(); ) {
+                LoanInfo loanInfo = iterator.next();
+                this.loanInfoMongoDao.updateById(LoanInfo.class, loanInfo.get_id().toString(), "syncStatus", "INIT");
+            }
+        }
+
+        BasicQuery query2 = new BasicQuery("{ syncStatus : 'REPEAT_REPORT_FAILED' }");
+        List<LoanInfo> loanInfoList2 = this.loanInfoMongoDao.findList(query2, LoanInfo.class);
+        if(CollectionUtils.isNotEmpty(loanInfoList2)) {
+            System.out.println("loanInfoList2 : " + loanInfoList2);
+            System.out.println("loanInfoList2-id : " + loanInfoList2.get(0).get_id().toString());
+            for (Iterator<LoanInfo> iterator = loanInfoList2.iterator(); iterator.hasNext(); ) {
+                LoanInfo loanInfo = iterator.next();
+                this.loanInfoMongoDao.updateById(LoanInfo.class, loanInfo.get_id().toString(), "syncStatus", "SUCCESS");
             }
         }
     }
@@ -175,6 +269,22 @@ public class ContractTest extends AbstractJunitTemplate {
             for (Iterator<LoanRecoveryInfo> iterator = loanRecoveryInfoList.iterator(); iterator.hasNext(); ) {
                 LoanRecoveryInfo loanRecoveryInfo = iterator.next();
                 this.loanRecoveryInfoMongoDao.updateById(LoanRecoveryInfo.class, loanRecoveryInfo.get_id().toString(), "syncStatus", "INIT");
+            }
+        }
+    }
+
+
+    public void realTimeSyncStatus(){
+        BasicQuery query = new BasicQuery("{ \"realTimeSyncStatus\" : \"FAILED\" }");
+        List<LoanAgreementInfo> loanAgreementInfoList = this.loanAgreementInfoMongoDao.findList(query, LoanAgreementInfo.class);
+        if(CollectionUtils.isNotEmpty(loanAgreementInfoList)){
+            System.out.println("loanAgreementInfoList : " + loanAgreementInfoList);
+            System.out.println("loanAgreementInfoList_id : " + loanAgreementInfoList.get(0).get_id().toString());
+            for(Iterator<LoanAgreementInfo> iterator=loanAgreementInfoList.iterator();iterator.hasNext();){
+                LoanAgreementInfo loanAgreementInfo = iterator.next();
+                Map<String, Object> request = Maps.newHashMap();
+                request.put("realTimeSyncStatus", "INIT");
+                this.loanAgreementInfoMongoDao.updateById(LoanAgreementInfo.class, loanAgreementInfo.get_id().toString(), request);
             }
         }
     }
