@@ -9,22 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mongo-main</artifactId>
-    <packaging>war</packaging>
-
-
-
-    <dependencies>
-        <dependency>
-            <artifactId>mongo-common</artifactId>
-            <groupId>com.abin.lee</groupId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
-
-
-
+    <groupId>com.abin.lee</groupId>
+    <artifactId>mongo-client</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
 
 </project>
